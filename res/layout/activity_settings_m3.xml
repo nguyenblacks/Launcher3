@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    M3 / Monet Settings Page Layout
+    - Monet-tinted surface background (F6F0FE - faint lavender/purple)
+    - Custom M3 Toolbar (no action bar, custom view)
+    - Clean preference list area
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/m3_settings_background">
+
+    <!-- M3 / Monet Top App Bar (replaces legacy ActionBar) -->
+    <FrameLayout
+        android:id="@+id/m3_settings_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Monet gradient header surface -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/bg_m3_settings_header"
+            android:alpha="0.15" />
+
+        <!-- Toolbar row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="4dp"
+            android:paddingEnd="16dp">
+
+            <!-- Back button -->
+            <ImageButton
+                android:id="@+id/m3_settings_back"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?android:selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:scaleType="center"
+                android:tint="#1C1B1F"
+                android:contentDescription="@string/cta_dismiss" />
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/m3_settings_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/settings_button_text"
+                android:textColor="#1C1B1F"
+                android:textSize="22sp"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0.0"
+                android:paddingStart="8dp" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <!-- Preferences content area -->
+    <FrameLayout
+        android:id="@+id/m3_settings_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/m3_settings_background" />
+
+</LinearLayout>

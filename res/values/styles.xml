@@ -29,7 +29,7 @@
     </style>
 
     <style name="BaseLauncherThemeWithCustomAttrs" parent="@style/BaseLauncherTheme">
-        <item name="allAppsScrimColor">#CCFFFFFF</item>
+        <item name="allAppsScrimColor">#D9FAFAFA</item>
         <item name="allAppsNavBarScrimColor">@color/all_apps_navbar_color</item>
         <item name="popupColorPrimary">#FFF</item>
         <item name="popupColorSecondary">#F5F5F5</item> <!-- Gray 100 -->
@@ -72,7 +72,7 @@
         <item name="android:textColorHint">#A0FFFFFF</item>
         <item name="android:colorControlHighlight">#A0FFFFFF</item>
         <item name="android:colorPrimary">#FF333333</item>
-        <item name="allAppsScrimColor">#7A212121</item>
+        <item name="allAppsScrimColor">#CC212121</item>
         <item name="allAppsNavBarScrimColor">#80000000</item>
         <item name="popupColorPrimary">?android:attr/colorPrimary</item>
         <item name="popupColorSecondary">#424242</item> <!-- Gray 800 -->
@@ -229,16 +229,28 @@
         <item name="gIcon">@drawable/ic_super_g_color</item>
         <item name="micIcon">@drawable/ic_mic_color</item>
     </style>
-    <style name="SettingsTheme" parent="@android:style/Theme.Material.Settings">
-        <item name="android:actionBarTheme">@style/SettingsTheme.ActionBar</item>
-        <item name="android:colorPrimary">@color/colorPrimary</item>
-        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">@color/lollipopStatusBar</item>
+    <!-- Material 3 / Monet Settings Theme -->
+    <style name="SettingsTheme" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <!-- M3 Surface background: clean off-white/neutral -->
+        <item name="android:windowBackground">@color/m3_settings_background</item>
+        <item name="android:statusBarColor">@color/m3_settings_background</item>
+        <item name="android:navigationBarColor">@color/m3_settings_background</item>
+        <!-- Monet dynamic accent -->
+        <item name="android:colorPrimary">@color/m3_monet_primary</item>
+        <item name="android:colorPrimaryDark">@color/m3_monet_primary_dark</item>
+        <item name="android:colorAccent">@color/m3_monet_primary</item>
+        <!-- M3 text colors -->
+        <item name="android:textColorPrimary">#1C1B1F</item>
+        <item name="android:textColorSecondary">#49454F</item>
+        <!-- Ripple -->
+        <item name="android:colorControlHighlight">#1A6750A4</item>
     </style>
-    <style name="SettingsTheme.ActionBar">
-        <item name="android:textColorPrimary">@color/colorAccent</item>
-        <item name="android:colorControlNormal">@color/colorAccent</item>
+    <style name="SettingsTheme.ActionBar" parent="@android:style/Widget.Material.Light.ActionBar.Solid">
+        <item name="android:background">@color/m3_settings_background</item>
+        <item name="android:textColorPrimary">#1C1B1F</item>
+        <item name="android:textColorSecondary">#49454F</item>
+        <item name="android:colorControlNormal">@color/m3_monet_primary</item>
+        <item name="android:elevation">0dp</item>
     </style>
 
     <style name="DialogAlert" parent="@android:style/Theme.Material.Light.Dialog.Alert">

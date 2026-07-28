@@ -39,8 +39,25 @@ public class SettingsActivity extends com.android.launcher3.SettingsActivity imp
     @Override
     protected void onCreate(final Bundle bundle) {
         super.onCreate(bundle);
+
+        // Inflate M3 / Monet custom layout (no legacy ActionBar)
+        setContentView(R.layout.activity_settings_m3);
+
+        // Hook up M3 back button
+        android.view.View backBtn = findViewById(R.id.m3_settings_back);
+        if (backBtn != null) {
+            backBtn.setOnClickListener(new android.view.View.OnClickListener() {
+                @Override
+                public void onClick(android.view.View v) {
+                    onBackPressed();
+                }
+            });
+        }
+
         if (bundle == null) {
-            getFragmentManager().beginTransaction().replace(android.R.id.content, new MySettingsFragment()).commit();
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.m3_settings_content, new MySettingsFragment())
+                    .commit();
         }
     }
 

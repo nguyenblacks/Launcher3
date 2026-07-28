@@ -22,7 +22,7 @@
     <skip />
 
     <!-- Application name -->
-    <string name="app_name">Launcher3</string>
+    <string name="app_name">Go Launcher 3</string>
     <!-- Default folder name -->
     <string name="folder_name"></string>
     <!-- Work folder name -->
@@ -110,7 +110,7 @@
         shortcuts in Home.</string>
 
     <!-- Toast shown on clicking a direct call shortcut. [CHAR_LIMIT=80] -->
-    <string name="msg_no_phone_permission"><xliff:g id="app_name" example="Launcher3">%1$s</xliff:g> is not allowed to make phone calls</string>
+    <string name="msg_no_phone_permission"><xliff:g id="app_name" example="Go Launcher 3">%1$s</xliff:g> is not allowed to make phone calls</string>
 
     <!-- Widgets: -->
     <skip />    
@@ -337,7 +337,7 @@
     <string name="about_app_version">Version</string>
     <string name="app_releases_url">https://play.google.com/store/apps/details?id=amirz.rootless.nexuslauncher</string>
     <string name="app_donate_url">https://play.google.com/store/apps/details?id=amirz.donation</string>
-    <string name="app_name_pixel_launcher">Pixel Launcher</string>
+    <string name="app_name_pixel_launcher">Go Launcher 3</string>
     <string name="title_disable_suggestions_prompt">Turn off app suggestions?</string>
     <string name="msg_disable_suggestions_prompt">"Suggestions won't appear at the top of your apps list, and the usage data used to create them will be permanently erased."</string>
     <string name="label_turn_off_suggestions">TURN OFF</string>
@@ -358,7 +358,7 @@
     <string name="pref_open_source_licenses_title">Open source licenses</string>
 
     <!-- Custom -->
-    <string name="app_name_rootless_pixel_launcher">Rootless Pixel Launcher</string>
+    <string name="app_name_rootless_pixel_launcher">Go Launcher 3</string>
     <string name="about_donate">Donate</string>
     <string name="bridge_missing_title">Rootless Pixel Bridge</string>
     <string name="bridge_missing_message">

@@ -1,0 +1,206 @@
+name: Build Go Launcher 3 APK
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - o-mr1
+  pull_request:
+    branches:
+      - main
+      - master
+      - o-mr1
+  workflow_dispatch: # Allow manual trigger from GitHub UI
+
+jobs:
+  # ────────────────────────────────────────────────────────────────────────────
+  # Debug build — runs on every push / PR
+  # ────────────────────────────────────────────────────────────────────────────
+  build-debug:
+    name: 🔨 Build Debug APK
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 2. JDK 8 (required for Gradle plugin 3.1.x + compileSdkVersion 27)
+      - name: Set up JDK 8
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
+      # 3. Android SDK
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install SDK platform 27 + build-tools 27.0.3
+        run: |
+          yes | sdkmanager --licenses > /dev/null 2>&1 || true
+          sdkmanager \
+            "platforms;android-27" \
+            "build-tools;27.0.3" \
+            "platform-tools"
+
+      # 4. Bootstrap Gradle wrapper (not committed — AOSP project style)
+      - name: Bootstrap Gradle 4.6 wrapper
+        run: |
+          GRADLE_VERSION=4.6
+          wget -q "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" -O /tmp/gradle.zip
+          unzip -q /tmp/gradle.zip -d /tmp/gradle-dist
+          GRADLE_HOME=/tmp/gradle-dist/gradle-${GRADLE_VERSION}
+          export PATH=$GRADLE_HOME/bin:$PATH
+          # Generate gradlew + gradle/wrapper/ inside the project
+          gradle wrapper --gradle-version "$GRADLE_VERSION" --distribution-type bin
+          chmod +x gradlew
+
+      # 5. Cache Gradle
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # 6. Build debug APK (aosp product flavor)
+      - name: Build debug APK
+        run: |
+          ./gradlew assembleAospDebug \
+            --no-daemon \
+            --stacktrace \
+            -PdisablePreDex=true
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
+
+      # 7. Locate & rename APK
+      - name: Locate APK
+        id: apk_info
+        run: |
+          APK=$(find build/outputs/apk -name "*.apk" | head -1)
+          echo "apk_path=$APK" >> $GITHUB_OUTPUT
+          FNAME="GoLauncher3-debug-$(echo $GITHUB_SHA | cut -c1-8).apk"
+          cp "$APK" "$FNAME"
+          echo "apk_name=$FNAME" >> $GITHUB_OUTPUT
+          echo "apk_size=$(du -h $FNAME | cut -f1)" >> $GITHUB_OUTPUT
+
+      # 8. Upload artifact
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: GoLauncher3-debug-${{ github.run_number }}
+          path: ${{ steps.apk_info.outputs.apk_name }}
+          retention-days: 30
+
+      # 9. Step summary
+      - name: Build summary
+        if: always()
+        run: |
+          echo "## 🚀 Go Launcher 3 Build" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Key | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Branch | \`${{ github.ref_name }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Commit | \`$(echo $GITHUB_SHA | cut -c1-8)\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| APK | \`${{ steps.apk_info.outputs.apk_name }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Size | ${{ steps.apk_info.outputs.apk_size }} |" >> $GITHUB_STEP_SUMMARY
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # Release build — only runs when a version tag is pushed (e.g. v3.9.2)
+  # ────────────────────────────────────────────────────────────────────────────
+  release:
+    name: 🏷️ Release APK
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install SDK components
+        run: |
+          yes | sdkmanager --licenses > /dev/null 2>&1 || true
+          sdkmanager \
+            "platforms;android-27" \
+            "build-tools;27.0.3" \
+            "platform-tools"
+
+      - name: Bootstrap Gradle 4.6 wrapper
+        run: |
+          GRADLE_VERSION=4.6
+          wget -q "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" -O /tmp/gradle.zip
+          unzip -q /tmp/gradle.zip -d /tmp/gradle-dist
+          GRADLE_HOME=/tmp/gradle-dist/gradle-${GRADLE_VERSION}
+          export PATH=$GRADLE_HOME/bin:$PATH
+          gradle wrapper --gradle-version "$GRADLE_VERSION" --distribution-type bin
+          chmod +x gradlew
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+
+      - name: Build release APK
+        run: |
+          ./gradlew assembleAospRelease \
+            --no-daemon \
+            --stacktrace \
+            -PdisablePreDex=true
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
+
+      - name: Locate & stage release APK
+        id: release_apk
+        run: |
+          APK=$(find build/outputs/apk -name "*release*.apk" | head -1)
+          TAG=${{ github.ref_name }}
+          FNAME="GoLauncher3-${TAG}.apk"
+          cp "$APK" "$FNAME"
+          echo "apk_path=$FNAME" >> $GITHUB_OUTPUT
+          echo "apk_size=$(du -h $FNAME | cut -f1)" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "Go Launcher 3 ${{ github.ref_name }}"
+          body: |
+            ## 🚀 Go Launcher 3 ${{ github.ref_name }}
+
+            ### Installation
+            1. Download the APK below
+            2. Transfer to your Android device
+            3. Enable **"Install from unknown sources"** if prompted
+            4. Install and set as default launcher
+
+            > **Requires Android 5.0+ (API 21)**
+
+            ---
+            *APK size: ${{ steps.release_apk.outputs.apk_size }}*
+          files: ${{ steps.release_apk.outputs.apk_path }}
+          draft: false
+          prerelease: ${{ contains(github.ref_name, 'beta') || contains(github.ref_name, 'alpha') }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

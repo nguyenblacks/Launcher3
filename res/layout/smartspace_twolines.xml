@@ -30,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:maxLines="1"
+        android:fontFamily="sans-serif-medium"
         android:textColor="?workspaceTextColor"
         android:textSize="@dimen/smartspace_title_size"
         launcher:ambientShadowBlur="3dp"

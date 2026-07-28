@@ -107,4 +107,25 @@ public abstract class SystemShortcut extends ItemInfo {
             };
         }
     }
+
+    public static class Install extends SystemShortcut {
+        public Install() {
+            super(R.drawable.ic_uninstall_no_shadow, R.string.uninstall_drop_target_label);
+        }
+
+        @Override
+        public View.OnClickListener getOnClickListener(final Launcher launcher,
+                final ItemInfo itemInfo) {
+            if (!com.android.launcher3.UninstallDropTarget.supportsDrop(launcher, itemInfo)) {
+                return null;
+            }
+            return new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AbstractFloatingView.closeAllOpenViews(launcher);
+                    com.android.launcher3.UninstallDropTarget.startUninstallActivity(launcher, itemInfo);
+                }
+            };
+        }
+    }
 }

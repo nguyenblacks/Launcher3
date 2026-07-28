@@ -71,6 +71,7 @@ public class DropTargetBar extends LinearLayout implements DragController.DragLi
 
         // Initialize with hidden state
         setAlpha(0f);
+        setVisibility(View.GONE);
     }
 
     public void setup(DragController dragController) {
@@ -171,7 +172,7 @@ public class DropTargetBar extends LinearLayout implements DragController.DragLi
      */
     @Override
     public void onDragStart(DropTarget.DragObject dragObject, DragOptions options) {
-        animateToVisibility(true);
+        // Drag up drop target bar disabled
     }
 
     /**

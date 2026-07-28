@@ -19,11 +19,19 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="28dp"
-    android:background="?android:attr/colorPrimary"
+    android:paddingTop="12dp"
+    android:background="@drawable/bg_bottom_sheet_m3"
     android:elevation="@dimen/deep_shortcuts_elevation"
     android:layout_gravity="bottom"
     android:theme="?attr/widgetsTheme">
+
+    <!-- Material 3 Drag Handle -->
+    <View
+        android:layout_width="32dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_bottom_sheet_handle" />
 
     <TextView
         style="@style/TextTitle"
@@ -31,8 +39,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:fontFamily="sans-serif-medium"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="24sp"/>
+        android:textSize="22sp"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -49,8 +58,8 @@
         android:name="com.google.android.apps.nexuslauncher.CustomBottomSheet$PrefsFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="40dp" />
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="32dp" />
 
     <View
         android:id="@+id/nav_bar_bg"

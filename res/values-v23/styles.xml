@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="SettingsTheme" parent="@android:style/Theme.Material.Settings">
+    <!-- Material 3 / Monet Settings Theme (API 23+) -->
+    <style name="SettingsTheme" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <!-- M3 Surface background: clean off-white/neutral -->
+        <item name="android:windowBackground">@color/m3_settings_background</item>
+        <item name="android:statusBarColor">@color/m3_settings_background</item>
+        <item name="android:navigationBarColor">@color/m3_settings_background</item>
+        <!-- Light status bar (dark icons) -->
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:actionBarTheme">@style/SettingsTheme.ActionBar</item>
-        <item name="android:colorPrimary">@color/colorPrimary</item>
-        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:colorAccent">@color/colorAccent</item>
+        <!-- Monet dynamic accent -->
+        <item name="android:colorPrimary">@color/m3_monet_primary</item>
+        <item name="android:colorPrimaryDark">@color/m3_monet_primary_dark</item>
+        <item name="android:colorAccent">@color/m3_monet_primary</item>
+        <!-- M3 text colors -->
+        <item name="android:textColorPrimary">#1C1B1F</item>
+        <item name="android:textColorSecondary">#49454F</item>
+        <!-- Ripple -->
+        <item name="android:colorControlHighlight">#1A6750A4</item>
     </style>
 </resources>
