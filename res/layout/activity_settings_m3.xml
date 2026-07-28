@@ -43,7 +43,7 @@
                 android:src="@android:drawable/ic_menu_close_clear_cancel"
                 android:scaleType="center"
                 android:tint="#1C1B1F"
-                android:contentDescription="@string/cta_dismiss" />
+                android:contentDescription="@android:string/cancel" />
 
             <!-- Title -->
             <TextView

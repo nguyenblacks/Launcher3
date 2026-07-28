@@ -52,6 +52,20 @@
     <!-- Custom -->
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
 
+    <!--
+        Android 11+ (API 30): Launchers MUST declare QUERY_ALL_PACKAGES to see all
+        installed apps in the App Drawer. Without this the drawer will appear empty.
+        This permission is automatically granted to launchers set as default home app.
+    -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+
+    <!--
+        Android 13+ (API 33): Required to post notifications (badge counts, etc.)
+        System will show a runtime prompt — launcher handles this gracefully.
+    -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+
     <application
         android:backupAgent="com.android.launcher3.LauncherBackupAgent"
         android:fullBackupOnly="true"
