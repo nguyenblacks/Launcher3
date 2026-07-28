@@ -276,7 +276,9 @@ public class SmartspaceView extends FrameLayout implements ISmartspace, ValueAni
     protected void onFinishInflate() {
         super.onFinishInflate();
         loadViews();
-        dr = findViewById(R.id.dummyBubbleTextView);
+        // Create a dummy BubbleTextView programmatically — it's only used as a
+        // popup anchor and doesn't exist in any layout XML.
+        dr = new BubbleTextView(getContext());
         dr.setTag(new ItemInfo() {
             @Override
             public ComponentName getTargetComponent() {
