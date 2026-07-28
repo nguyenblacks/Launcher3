@@ -39,16 +39,24 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # 3. Install required SDK components with JDK 17
-      - name: Install SDK platform 27 + build-tools 27.0.3
+      # 3. Remove pre-installed SDK platforms (old AGP 3.1.3 can't parse newer XML schemas)
+      #    The ubuntu-latest runner ships with platform 34 which has a corrupted
+      #    package.xml (api-level>34x instead of 34) that breaks the old SDK parser.
+      - name: Clean pre-installed SDK platforms
+        run: |
+          rm -rf $ANDROID_HOME/platforms
+          mkdir -p $ANDROID_HOME/platforms
+
+      # 4. Install required SDK components with JDK 17
+      - name: Install SDK platform 36 + build-tools 27.0.3
         run: |
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1 || true
           $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
-            "platforms;android-27" \
+            "platforms;android-36" \
             "build-tools;27.0.3" \
             "platform-tools"
 
-      # 4. Switch to JDK 11 for Gradle
+      # 5. Switch to JDK 11 for Gradle
       #    AGP 3.1.3 + Gradle 4.x is incompatible with JDK 17 (module system)
       - name: Switch to JDK 11 (for Gradle build)
         uses: actions/setup-java@v4
@@ -56,7 +64,7 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      # 5. Bootstrap Gradle 4.10.3 wrapper (not committed — AOSP project)
+      # 6. Bootstrap Gradle 4.10.3 wrapper (not committed — AOSP project)
       #    4.10.3 = last stable 4.x, compatible with AGP 3.1.x + JDK 11
       - name: Bootstrap Gradle 4.10.3 wrapper
         run: |
@@ -69,7 +77,7 @@ jobs:
           gradle wrapper --gradle-version "$GRADLE_VERSION" --distribution-type bin
           chmod +x gradlew
 
-      # 6. Cache Gradle
+      # 7. Cache Gradle
       - name: Cache Gradle
         uses: actions/cache@v4
         with:
@@ -79,7 +87,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle', '**/gradle-wrapper.properties') }}
           restore-keys: ${{ runner.os }}-gradle-
 
-      # 7. Build debug APK (aosp product flavor)
+      # 8. Build debug APK (aosp product flavor)
       - name: Build debug APK
         run: |
           ./gradlew assembleAospDebug \
@@ -87,7 +95,7 @@ jobs:
             --stacktrace \
             -PdisablePreDex=true
 
-      # 8. Locate & rename APK
+      # 9. Locate & rename APK
       - name: Locate APK
         id: apk_info
         run: |
@@ -98,7 +106,7 @@ jobs:
           echo "apk_name=$FNAME" >> $GITHUB_OUTPUT
           echo "apk_size=$(du -h $FNAME | cut -f1)" >> $GITHUB_OUTPUT
 
-      # 9. Upload APK artifact
+      # 10. Upload APK artifact
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
@@ -106,7 +114,7 @@ jobs:
           path: ${{ steps.apk_info.outputs.apk_name }}
           retention-days: 30
 
-      # 10. Step summary
+      # 11. Step summary
       - name: Build summary
         if: always()
         run: |
@@ -139,11 +147,16 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Clean pre-installed SDK platforms
+        run: |
+          rm -rf $ANDROID_HOME/platforms
+          mkdir -p $ANDROID_HOME/platforms
+
       - name: Install SDK components
         run: |
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1 || true
           $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
-            "platforms;android-27" \
+            "platforms;android-36" \
             "build-tools;27.0.3" \
             "platform-tools"
 
