@@ -44,7 +44,7 @@ import com.android.launcher3.touch.SwipeDetector;
 import com.android.launcher3.anim.PropertyListBuilder;
 import com.android.launcher3.dragndrop.DragController;
 import com.android.launcher3.dragndrop.DragOptions;
-import com.android.launcher3.graphics.GradientView;
+// GradientView scrim removed — no more transparent overlay behind bottom sheet
 import com.android.launcher3.model.WidgetItem;
 import com.android.launcher3.userevent.nano.LauncherLogProto;
 import com.android.launcher3.util.PackageUserKey;
@@ -72,7 +72,7 @@ public class WidgetsBottomSheet extends AbstractFloatingView implements Insettab
     private SwipeDetector.ScrollInterpolator mScrollInterpolator;
     private Rect mInsets;
     private SwipeDetector mSwipeDetector;
-    private GradientView mGradientBackground;
+
 
     public WidgetsBottomSheet(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -88,8 +88,6 @@ public class WidgetsBottomSheet extends AbstractFloatingView implements Insettab
         mScrollInterpolator = new SwipeDetector.ScrollInterpolator();
         mInsets = new Rect();
         mSwipeDetector = new SwipeDetector(context, this, SwipeDetector.VERTICAL);
-        mGradientBackground = (GradientView) mLauncher.getLayoutInflater().inflate(
-                R.layout.gradient_bg, mLauncher.getDragLayer(), false);
     }
 
     @Override
@@ -107,8 +105,6 @@ public class WidgetsBottomSheet extends AbstractFloatingView implements Insettab
 
         onWidgetsBound();
 
-        mLauncher.getDragLayer().addView(mGradientBackground);
-        mGradientBackground.setVisibility(VISIBLE);
         mLauncher.getDragLayer().addView(this);
         measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
         setTranslationY(mTranslationYClosed);
@@ -230,7 +226,6 @@ public class WidgetsBottomSheet extends AbstractFloatingView implements Insettab
 
     private void onCloseComplete() {
         mIsOpen = false;
-        mLauncher.getDragLayer().removeView(mGradientBackground);
         mLauncher.getDragLayer().removeView(WidgetsBottomSheet.this);
         mLauncher.getSystemUiController().updateUiState(
                 SystemUiController.UI_STATE_WIDGET_BOTTOM_SHEET, 0);
@@ -289,10 +284,7 @@ public class WidgetsBottomSheet extends AbstractFloatingView implements Insettab
     @Override
     public void setTranslationY(float translationY) {
         super.setTranslationY(translationY);
-        if (mGradientBackground == null) return;
-        float p = (mTranslationYClosed - translationY) / mTranslationYRange;
-        boolean showScrim = p <= 0;
-        mGradientBackground.setProgress(p, showScrim);
+        // No gradient scrim — sheet drags cleanly without overlay
     }
 
     @Override
