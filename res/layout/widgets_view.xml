@@ -55,9 +55,10 @@
             android:layout_gravity="top|end"
             android:layout_marginEnd="@dimen/fastscroll_popup_margin" />
 
-        <ProgressBar
+        <include
             android:id="@+id/loader"
-            android:layout_width="wrap_content"
+            layout="@layout/widgets_skeleton_loader"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
 
