@@ -63,9 +63,9 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      - name: Bootstrap Gradle 4.10.3 wrapper
+      - name: Bootstrap Gradle 7.3.3 wrapper
         run: |
-          GRADLE_VERSION=4.10.3
+          GRADLE_VERSION=7.3.3
           wget -q "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" \
                -O /tmp/gradle.zip
           unzip -q /tmp/gradle.zip -d /tmp/gradle-dist
@@ -121,7 +121,7 @@ jobs:
 
   release:
     name: Release APK
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     permissions:
       contents: write
@@ -138,15 +138,16 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Clean pre-installed SDK platforms
+      - name: Install SDK platform 31 + build-tools 31.0.0 into a writable dir
         run: |
-          rm -rf $ANDROID_HOME/platforms
-          mkdir -p $ANDROID_HOME/platforms
+          set -euo pipefail
 
-      - name: Install SDK components
-        run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1 || true
-          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
+          SYSTEM_SDK=/usr/local/lib/android/sdk
+          SDKMANAGER=$SYSTEM_SDK/cmdline-tools/latest/bin/sdkmanager
+
+          mkdir -p "$ANDROID_HOME"
+          yes | "$SDKMANAGER" --sdk_root="$ANDROID_HOME" --licenses > /dev/null 2>&1 || true
+          "$SDKMANAGER" --sdk_root="$ANDROID_HOME" \
             "platforms;android-31" \
             "build-tools;31.0.0" \
             "platform-tools"
@@ -157,9 +158,9 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      - name: Bootstrap Gradle 4.10.3 wrapper
+      - name: Bootstrap Gradle 7.3.3 wrapper
         run: |
-          GRADLE_VERSION=4.10.3
+          GRADLE_VERSION=7.3.3
           wget -q "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" \
                -O /tmp/gradle.zip
           unzip -q /tmp/gradle.zip -d /tmp/gradle-dist
