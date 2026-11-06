@@ -21,7 +21,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" >
 
-    <uses-sdk android:targetSdkVersion="35" android:minSdkVersion="26"/>
 
     <application
         android:backupAgent="com.android.launcher3.LauncherBackupAgent"
