@@ -26,12 +26,13 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.provider.Settings;
+import android.view.View;
+import android.widget.ListView;
 
 import com.android.launcher3.graphics.IconShapeOverride;
 import com.android.launcher3.notification.NotificationListener;
@@ -78,8 +79,6 @@ public class SettingsActivity extends Activity {
             super.onCreate(savedInstanceState);
             getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
             addPreferencesFromResource(R.xml.launcher_preferences);
-            getListView().setDivider(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-            getListView().setDividerHeight(0);
 
             ContentResolver resolver = getActivity().getContentResolver();
 
@@ -121,6 +120,16 @@ public class SettingsActivity extends Activity {
                 } else {
                     getPreferenceScreen().removePreference(iconShapeOverride);
                 }
+            }
+        }
+
+        @Override
+        public void onViewCreated(View view, Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+            ListView listView = view.findViewById(android.R.id.list);
+            if (listView != null) {
+                listView.setDivider(null);
+                listView.setDividerHeight(0);
             }
         }
 

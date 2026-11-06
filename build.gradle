@@ -17,6 +17,10 @@ android {
     namespace 'com.android.launcher3'
     testNamespace 'com.android.launcher3.tests'
     compileSdkVersion 36
+    buildFeatures {
+        aidl = true
+        buildConfig = true
+    }
 
     defaultConfig {
         minSdkVersion 26

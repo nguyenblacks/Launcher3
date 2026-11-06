@@ -63,8 +63,6 @@ public class AppsSearchContainerLayout extends FrameLayout
     private AlphabeticalAppsList mApps;
     private AllAppsRecyclerView mAppsRecyclerView;
     private AllAppsGridAdapter mAdapter;
-    private View mDivider;
-    private HeaderElevationController mElevationController;
 
     private SpringAnimation mSpring;
 
@@ -96,8 +94,6 @@ public class AppsSearchContainerLayout extends FrameLayout
     protected void onFinishInflate() {
         super.onFinishInflate();
         mSearchInput = findViewById(R.id.search_box_input);
-        mDivider = findViewById(R.id.search_divider);
-        mElevationController = new HeaderElevationController(mDivider);
 
         // Update the hint to contain the icon.
         // Prefix the original hint with two spaces. The first space gets replaced by the icon
@@ -107,12 +103,6 @@ public class AppsSearchContainerLayout extends FrameLayout
         spanned.setSpan(new TintedDrawableSpan(getContext(), R.drawable.ic_allapps_search),
                 0, 1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         mSearchInput.setHint(spanned);
-
-        DeviceProfile dp = mLauncher.getDeviceProfile();
-        if (!dp.isVerticalBarLayout()) {
-            LayoutParams lp = (LayoutParams) mDivider.getLayoutParams();
-            lp.leftMargin = lp.rightMargin = dp.edgeMarginPx;
-        }
     }
 
     @Override
@@ -122,14 +112,11 @@ public class AppsSearchContainerLayout extends FrameLayout
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
-
-
     @Override
     public void initialize(
             AlphabeticalAppsList appsList, AllAppsRecyclerView recyclerView) {
         mApps = appsList;
         mAppsRecyclerView = recyclerView;
-        mAppsRecyclerView.addOnScrollListener(mElevationController);
         mAdapter = (AllAppsGridAdapter) mAppsRecyclerView.getAdapter();
         mSearchBarController.initialize(
                 new DefaultAppSearchAlgorithm(getContext(), appsList.getApps()), mSearchInput, mLauncher, this);
@@ -147,7 +134,6 @@ public class AppsSearchContainerLayout extends FrameLayout
 
     @Override
     public void reset() {
-        mElevationController.reset();
         mSearchBarController.reset();
     }
 
@@ -208,7 +194,6 @@ public class AppsSearchContainerLayout extends FrameLayout
     }
 
     private void notifyResultChanged() {
-        mElevationController.reset();
         mAppsRecyclerView.onSearchResultsChanged();
     }
 
