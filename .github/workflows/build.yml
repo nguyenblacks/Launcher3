@@ -41,7 +41,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Install SDK platform 37 + build-tools 36.0.0 into a writable dir
+      - name: Install SDK platform 36 + build-tools 36.0.0 into a writable dir
         run: |
           set -euo pipefail
 
@@ -55,7 +55,7 @@ jobs:
 
           # Install only what we need into the writable SDK root.
           "$SDKMANAGER" --sdk_root="$ANDROID_HOME" \
-            "platforms;android-37" \
+            "platforms;android-36" \
             "build-tools;36.0.0" \
             "platform-tools"
 
@@ -142,7 +142,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Install SDK platform 37 + build-tools 36.0.0 into a writable dir
+      - name: Install SDK platform 36 + build-tools 36.0.0 into a writable dir
         run: |
           set -euo pipefail
 
@@ -152,7 +152,7 @@ jobs:
           mkdir -p "$ANDROID_HOME"
           yes | "$SDKMANAGER" --sdk_root="$ANDROID_HOME" --licenses > /dev/null 2>&1 || true
           "$SDKMANAGER" --sdk_root="$ANDROID_HOME" \
-            "platforms;android-37" \
+            "platforms;android-36" \
             "build-tools;36.0.0" \
             "platform-tools"
 

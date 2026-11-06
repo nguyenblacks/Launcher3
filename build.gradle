@@ -16,7 +16,7 @@ apply plugin: 'com.google.protobuf'
 android {
     namespace 'com.android.launcher3'
     testNamespace 'com.android.launcher3.tests'
-    compileSdkVersion 37
+    compileSdkVersion 36
 
     defaultConfig {
         minSdkVersion 26
@@ -115,7 +115,7 @@ repositories {
 
 dependencies {
     implementation 'androidx.annotation:annotation:1.11.0'
-    implementation 'androidx.core:core:1.19.1'
+    implementation 'androidx.core:core:1.18.0'
     implementation 'androidx.core:core-splashscreen:1.2.0'
     implementation 'androidx.customview:customview:1.2.0'
     implementation 'androidx.dynamicanimation:dynamicanimation:1.1.0'
