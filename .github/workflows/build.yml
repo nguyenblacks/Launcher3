@@ -35,13 +35,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up JDK 17 (for sdkmanager)
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Install SDK platform 31 + build-tools 31.0.0 into a writable dir
+      - name: Install SDK platform 37 + build-tools 36.0.0 into a writable dir
         run: |
           set -euo pipefail
 
@@ -55,26 +55,9 @@ jobs:
 
           # Install only what we need into the writable SDK root.
           "$SDKMANAGER" --sdk_root="$ANDROID_HOME" \
-            "platforms;android-31" \
-            "build-tools;31.0.0" \
+            "platforms;android-37" \
+            "build-tools;36.0.0" \
             "platform-tools"
-
-      - name: Switch to JDK 11 (for Gradle build)
-        uses: actions/setup-java@v4
-        with:
-          java-version: '11'
-          distribution: 'temurin'
-
-      - name: Bootstrap Gradle 7.3.3 wrapper
-        run: |
-          GRADLE_VERSION=7.3.3
-          wget -q "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" \
-               -O /tmp/gradle.zip
-          unzip -q /tmp/gradle.zip -d /tmp/gradle-dist
-          export GRADLE_HOME=/tmp/gradle-dist/gradle-${GRADLE_VERSION}
-          export PATH=$GRADLE_HOME/bin:$PATH
-          gradle wrapper --gradle-version "$GRADLE_VERSION" --distribution-type bin
-          chmod +x gradlew
 
       - name: Cache Gradle
         uses: actions/cache@v4
@@ -153,13 +136,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up JDK 17 (for sdkmanager)
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Install SDK platform 31 + build-tools 31.0.0 into a writable dir
+      - name: Install SDK platform 37 + build-tools 36.0.0 into a writable dir
         run: |
           set -euo pipefail
 
@@ -169,26 +152,9 @@ jobs:
           mkdir -p "$ANDROID_HOME"
           yes | "$SDKMANAGER" --sdk_root="$ANDROID_HOME" --licenses > /dev/null 2>&1 || true
           "$SDKMANAGER" --sdk_root="$ANDROID_HOME" \
-            "platforms;android-31" \
-            "build-tools;31.0.0" \
+            "platforms;android-37" \
+            "build-tools;36.0.0" \
             "platform-tools"
-
-      - name: Switch to JDK 11 (for Gradle build)
-        uses: actions/setup-java@v4
-        with:
-          java-version: '11'
-          distribution: 'temurin'
-
-      - name: Bootstrap Gradle 7.3.3 wrapper
-        run: |
-          GRADLE_VERSION=7.3.3
-          wget -q "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" \
-               -O /tmp/gradle.zip
-          unzip -q /tmp/gradle.zip -d /tmp/gradle-dist
-          export GRADLE_HOME=/tmp/gradle-dist/gradle-${GRADLE_VERSION}
-          export PATH=$GRADLE_HOME/bin:$PATH
-          gradle wrapper --gradle-version "$GRADLE_VERSION" --distribution-type bin
-          chmod +x gradlew
 
       - name: Cache Gradle
         uses: actions/cache@v4
