@@ -26,6 +26,8 @@ jobs:
   build-debug:
     name: Build Debug APK
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repository
@@ -106,6 +108,25 @@ jobs:
           name: GoLauncher3-debug-${{ github.run_number }}
           path: ${{ steps.apk_info.outputs.apk_name }}
           retention-days: 30
+
+      - name: Publish debug pre-release
+        if: github.event_name != 'pull_request' && !startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: debug-${{ github.run_number }}-${{ github.run_attempt }}
+          name: "Go Launcher 3 Debug Build ${{ github.run_number }}"
+          body: |
+            Automated debug build from `${{ github.ref_name }}`.
+
+            Commit: `${{ github.sha }}`
+
+            > This is a debug build and may be unstable.
+          files: ${{ steps.apk_info.outputs.apk_name }}
+          draft: false
+          prerelease: true
+          generate_release_notes: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build summary
         if: always()
