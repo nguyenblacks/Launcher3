@@ -23,11 +23,15 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE_TAGS := optional
 
-LOCAL_STATIC_JAVA_LIBRARIES := \
-    android-support-v4 \
-    android-support-v7-recyclerview \
-    android-support-v7-palette \
-    android-support-dynamic-animation
+LOCAL_STATIC_ANDROID_LIBRARIES := \
+    androidx.annotation_annotation \
+    androidx.core_core \
+    androidx.customview_customview \
+    androidx.dynamicanimation_dynamicanimation \
+    androidx.interpolator_interpolator \
+    androidx.palette_palette \
+    androidx.recyclerview_recyclerview \
+    com.google.android.material_material
 
 LOCAL_SRC_FILES := \
     $(call all-java-files-under, src) \
@@ -40,7 +44,6 @@ LOCAL_SRC_FILES := \
 
 LOCAL_RESOURCE_DIR := \
     $(LOCAL_PATH)/res \
-    prebuilts/sdk/current/support/v7/recyclerview/res \
 
 LOCAL_PROGUARD_FLAG_FILES := proguard.flags
 
@@ -51,10 +54,11 @@ LOCAL_PROTO_JAVA_OUTPUT_PARAMS := enum_style=java
 LOCAL_AAPT_FLAGS := \
     --rename-manifest-package com.google.android.apps.nexuslauncher \
     --auto-add-overlay \
-    --extra-packages android.support.v7.recyclerview \
+    --extra-packages androidx.recyclerview_recyclerview \
+    --extra-packages com.google.android.material_material \
 
 LOCAL_SDK_VERSION := current
-LOCAL_MIN_SDK_VERSION := 21
+LOCAL_MIN_SDK_VERSION := 26
 LOCAL_PACKAGE_NAME := Launcher3
 LOCAL_PRIVILEGED_MODULE := true
 LOCAL_OVERRIDES_PACKAGES := Home Launcher2
@@ -72,11 +76,15 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE_TAGS := optional
 
-LOCAL_STATIC_JAVA_LIBRARIES := \
-    android-support-v4 \
-    android-support-v7-recyclerview \
-    android-support-v7-palette \
-    android-support-dynamic-animation
+LOCAL_STATIC_ANDROID_LIBRARIES := \
+    androidx.annotation_annotation \
+    androidx.core_core \
+    androidx.customview_customview \
+    androidx.dynamicanimation_dynamicanimation \
+    androidx.interpolator_interpolator \
+    androidx.palette_palette \
+    androidx.recyclerview_recyclerview \
+    com.google.android.material_material
 
 LOCAL_SRC_FILES := \
     $(call all-java-files-under, src) \
@@ -89,7 +97,6 @@ LOCAL_SRC_FILES := \
 LOCAL_RESOURCE_DIR := \
     $(LOCAL_PATH)/go/res \
     $(LOCAL_PATH)/res \
-    prebuilts/sdk/current/support/v7/recyclerview/res \
 
 LOCAL_PROGUARD_FLAG_FILES := proguard.flags
 
@@ -100,10 +107,11 @@ LOCAL_PROTO_JAVA_OUTPUT_PARAMS := enum_style=java
 LOCAL_AAPT_FLAGS := \
     --rename-manifest-package com.google.android.apps.nexuslauncher \
     --auto-add-overlay \
-    --extra-packages android.support.v7.recyclerview \
+    --extra-packages androidx.recyclerview_recyclerview \
+    --extra-packages com.google.android.material_material \
 
 LOCAL_SDK_VERSION := current
-LOCAL_MIN_SDK_VERSION := 21
+LOCAL_MIN_SDK_VERSION := 26
 LOCAL_PACKAGE_NAME := Launcher3Go
 LOCAL_PRIVILEGED_MODULE := true
 LOCAL_OVERRIDES_PACKAGES := Home Launcher2 Launcher3

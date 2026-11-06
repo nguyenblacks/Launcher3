@@ -3,11 +3,11 @@ package com.google.android.apps.nexuslauncher.qsb;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.support.animation.FloatPropertyCompat;
-import android.support.animation.SpringAnimation;
-import android.support.annotation.NonNull;
-import android.support.v4.graphics.ColorUtils;
-import android.support.v7.widget.RecyclerView;
+import androidx.dynamicanimation.animation.FloatPropertyCompat;
+import androidx.dynamicanimation.animation.SpringAnimation;
+import androidx.annotation.NonNull;
+import androidx.core.graphics.ColorUtils;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -149,12 +149,6 @@ public class AllAppsQsbLayout extends AbstractQsbLayout implements SearchUiManag
     public void onClick(final View view) {
         super.onClick(view);
         if (view == this && (mFallback == null || mFallback.getVisibility() == View.GONE)) {
-            if (Utilities.ATLEAST_OREO) {
-                final ConfigBuilder config = new ConfigBuilder(this, true);
-                if (mActivity.getGoogleNow().startSearch(config.build(), config.getExtras())) {
-                    return;
-                }
-            }
             startAppsSearch();
         }
     }

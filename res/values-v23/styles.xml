@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Settings theme (API 23+) -->
-    <style name="SettingsTheme" parent="@android:style/Theme.Material.Light.NoActionBar">
-        <item name="android:windowBackground">@android:color/white</item>
-        <item name="android:statusBarColor">@android:color/white</item>
-        <item name="android:navigationBarColor">@android:color/white</item>
+    <style name="SettingsTheme" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/m3_monet_primary</item>
+        <item name="colorOnPrimary">#FFFFFFFF</item>
+        <item name="colorPrimaryContainer">#FFEADDFF</item>
+        <item name="colorOnPrimaryContainer">#FF21005D</item>
+        <item name="colorSecondary">#FF625B71</item>
+        <item name="colorOnSecondary">#FFFFFFFF</item>
+        <item name="colorSurface">@color/m3_settings_background</item>
+        <item name="colorOnSurface">#FF1C1B1F</item>
+        <item name="colorSurfaceVariant">#FFE7E0EC</item>
+        <item name="colorOnSurfaceVariant">#FF49454F</item>
+        <item name="android:windowBackground">?attr/colorSurface</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:textColorPrimary">#1C1B1F</item>
-        <item name="android:textColorSecondary">#49454F</item>
-        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">?attr/colorOnSurface</item>
+        <item name="android:textColorSecondary">?attr/colorOnSurfaceVariant</item>
+        <item name="android:colorAccent">@color/m3_monet_primary</item>
     </style>
 </resources>

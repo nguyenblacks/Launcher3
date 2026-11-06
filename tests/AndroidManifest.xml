@@ -14,12 +14,9 @@
     limitations under the License.
 -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.android.launcher3.tests">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-sdk android:targetSdkVersion="25" android:minSdkVersion="21"
-              tools:overrideLibrary="android.support.test.uiautomator.v18"/>
+    <uses-sdk android:targetSdkVersion="35" android:minSdkVersion="26"/>
 
     <application android:debuggable="true">
         <uses-library android:name="android.test.runner" />
@@ -28,7 +25,7 @@
     <instrumentation
         android:functionalTest="false"
         android:handleProfiling="false"
-        android:name="android.support.test.runner.AndroidJUnitRunner"
+        android:name="androidx.test.runner.AndroidJUnitRunner"
         android:targetPackage="com.android.launcher3" >
     </instrumentation>
 </manifest>

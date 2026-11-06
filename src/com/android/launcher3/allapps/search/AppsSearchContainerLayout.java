@@ -17,11 +17,11 @@ package com.android.launcher3.allapps.search;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.animation.FloatValueHolder;
-import android.support.animation.SpringAnimation;
-import android.support.animation.SpringForce;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.dynamicanimation.animation.FloatValueHolder;
+import androidx.dynamicanimation.animation.SpringAnimation;
+import androidx.dynamicanimation.animation.SpringForce;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.SpannableString;

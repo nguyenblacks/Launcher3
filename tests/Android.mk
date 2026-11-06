@@ -17,13 +17,19 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE_TAGS := tests
-LOCAL_STATIC_JAVA_LIBRARIES := android-support-test ub-uiautomator mockito-target-minus-junit4
+LOCAL_STATIC_JAVA_LIBRARIES := \
+    androidx.test.core \
+    androidx.test.ext.junit \
+    androidx.test.runner \
+    androidx.test.uiautomator_uiautomator \
+    mockito-target-minus-junit4
 
 LOCAL_SRC_FILES := $(call all-java-files-under, src)
 LOCAL_FULL_LIBS_MANIFEST_FILES := $(LOCAL_PATH)/AndroidManifest-common.xml
 
 LOCAL_SDK_VERSION := current
-LOCAL_MIN_SDK_VERSION := 21
+LOCAL_MIN_SDK_VERSION := 26
+LOCAL_AAPT_FLAGS := --rename-manifest-package com.android.launcher3.tests
 
 LOCAL_PACKAGE_NAME := Launcher3Tests
 

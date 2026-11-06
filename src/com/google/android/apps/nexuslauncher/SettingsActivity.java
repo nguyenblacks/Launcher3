@@ -48,16 +48,14 @@ public class SettingsActivity extends com.android.launcher3.SettingsActivity imp
         // Keep the settings content inside the launcher-owned toolbar layout.
         setContentView(R.layout.activity_settings_m3);
 
-        // Hook up the toolbar back button.
-        android.view.View backBtn = findViewById(R.id.m3_settings_back);
-        if (backBtn != null) {
-            backBtn.setOnClickListener(new android.view.View.OnClickListener() {
-                @Override
-                public void onClick(android.view.View v) {
-                    onBackPressed();
-                }
-            });
-        }
+        com.google.android.material.appbar.MaterialToolbar toolbar =
+                findViewById(R.id.m3_settings_toolbar);
+        toolbar.setNavigationOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                onBackPressed();
+            }
+        });
 
         if (bundle == null) {
             getFragmentManager().beginTransaction()
