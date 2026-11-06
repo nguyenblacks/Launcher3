@@ -57,6 +57,7 @@
         <!-- Intent received used to install shortcuts from other applications -->
         <receiver
             android:name="com.android.launcher3.InstallShortcutReceiver"
+            android:exported="true"
             android:permission="com.android.launcher.permission.INSTALL_SHORTCUT"
             android:enabled="@bool/enable_install_shortcut_api" >
             <intent-filter>
@@ -66,14 +67,16 @@
 
         <!-- Intent received when a session is committed -->
         <receiver
-            android:name="com.android.launcher3.SessionCommitReceiver" >
+            android:name="com.android.launcher3.SessionCommitReceiver"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.content.pm.action.SESSION_COMMITTED" />
             </intent-filter>
         </receiver>
 
         <!-- Intent received used to initialize a restored widget -->
-        <receiver android:name="com.android.launcher3.AppWidgetsRestoredReceiver" >
+        <receiver android:name="com.android.launcher3.AppWidgetsRestoredReceiver"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_HOST_RESTORED"/>
             </intent-filter>
@@ -92,6 +95,7 @@
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <service android:name="com.android.launcher3.notification.NotificationListener"
+                 android:exported="true"
                  android:enabled="@bool/notification_badging_enabled"
                  android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
@@ -103,6 +107,7 @@
                        android:value="true" />
 
         <activity android:name="com.android.launcher3.dragndrop.AddItemActivity"
+            android:exported="true"
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog.Alert"
             android:excludeFromRecents="true"
             android:autoRemoveFromRecents="true"
