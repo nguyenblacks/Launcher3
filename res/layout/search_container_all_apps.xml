@@ -38,7 +38,7 @@
         android:layout_height="@dimen/all_apps_search_bar_field_height"
         android:layout_gravity="bottom"
         android:layout_marginBottom="8dp"
-        android:background="@android:color/transparent"
+        android:background="@drawable/bg_qsb_click_feedback"
         android:focusableInTouchMode="true"
         android:gravity="center"
         android:hint="@string/all_apps_search_bar_hint"
@@ -48,6 +48,8 @@
         android:saveEnabled="false"
         android:scrollHorizontally="true"
         android:singleLine="true"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:textColor="?android:attr/textColorSecondary"
         android:textColorHint="@drawable/all_apps_search_hint"
         android:textSize="16sp" />

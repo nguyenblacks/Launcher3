@@ -15,8 +15,8 @@
      limitations under the License.
 -->
 
-<!-- Smartspace date/time removed — keep view for code compat but collapse it -->
-<com.google.android.apps.nexuslauncher.smartspace.SmartspaceView
+<!-- Keep the workspace search-bar slot without adding a home-screen clock. -->
+<View
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@id/search_container_workspace"
     android:layout_width="fill_parent"

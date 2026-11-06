@@ -79,6 +79,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.animation.OvershootInterpolator;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.android.launcher3.DropTarget.DragObject;
@@ -180,6 +181,8 @@ public class Launcher extends BaseActivity
     private static final int REQUEST_RECONFIGURE_APPWIDGET = 13;
 
     private static final int REQUEST_PERMISSION_CALL_PHONE = 14;
+    private static final int WIDGET_MENU_REMOVE = 1;
+    private static final int WIDGET_MENU_MOVE = 2;
 
     private static final float BOUNCE_ANIMATION_TENSION = 1.3f;
 
@@ -441,11 +444,7 @@ public class Launcher extends BaseActivity
         if (savedInstanceState != null) {
             currentScreen = savedInstanceState.getInt(RUNTIME_STATE_CURRENT_SCREEN, currentScreen);
         }
-        if (!mModel.startLoader(currentScreen)) {
-            // If we are not binding synchronously, show a fade in animation when
-            // the first page bind completes.
-            mDragLayer.setAlpha(0);
-        } else {
+        if (mModel.startLoader(currentScreen)) {
             // Pages bound synchronously.
             mWorkspace.setCurrentPage(currentScreen);
 
@@ -497,12 +496,10 @@ public class Launcher extends BaseActivity
     }
 
     protected void overrideTheme(boolean isDark, boolean supportsDarkText, boolean isTransparent) {
-        if (isDark) {
+        if (isDark || isTransparent) {
             setTheme(R.style.LauncherThemeDark);
         } else if (supportsDarkText) {
             setTheme(R.style.LauncherThemeDarkText);
-        } else if (isTransparent) {
-            setTheme(R.style.LauncherThemeTransparent);
         }
     }
 
@@ -2798,12 +2795,41 @@ public class Launcher extends BaseActivity
                                 mDeviceProfile.inv.isAllAppsButtonRank(mHotseat.getOrderInHotseat(
                                         longClickCellInfo.cellX, longClickCellInfo.cellY));
                 if (!(itemUnderLongClick instanceof Folder || isAllAppsButton)) {
-                    // User long pressed on an item
-                    mWorkspace.startDrag(longClickCellInfo, new DragOptions());
+                    if (v instanceof LauncherAppWidgetHostView
+                            && longClickCellInfo.cell.getTag() instanceof LauncherAppWidgetInfo) {
+                        showWidgetOptions(v, (LauncherAppWidgetInfo) longClickCellInfo.cell.getTag());
+                    } else {
+                        // User long pressed on an item
+                        mWorkspace.startDrag(longClickCellInfo, new DragOptions());
+                    }
                 }
             }
         }
         return true;
+    }
+
+    private void showWidgetOptions(final View widgetView,
+            final LauncherAppWidgetInfo widgetInfo) {
+        PopupMenu popup = new PopupMenu(this, widgetView);
+        popup.getMenu().add(Menu.NONE, WIDGET_MENU_REMOVE, Menu.NONE,
+                R.string.remove_drop_target_label);
+        popup.getMenu().add(Menu.NONE, WIDGET_MENU_MOVE, Menu.NONE, R.string.action_move);
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(android.view.MenuItem item) {
+                if (item.getItemId() == WIDGET_MENU_REMOVE) {
+                    DeleteDropTarget.removeWorkspaceOrFolderItem(
+                            Launcher.this, widgetInfo, widgetView);
+                    return true;
+                } else if (item.getItemId() == WIDGET_MENU_MOVE) {
+                    mWorkspace.startDrag(new CellLayout.CellInfo(widgetView, widgetInfo),
+                            new DragOptions());
+                    return true;
+                }
+                return false;
+            }
+        });
+        popup.show();
     }
 
     boolean isHotseatLayout(View layout) {

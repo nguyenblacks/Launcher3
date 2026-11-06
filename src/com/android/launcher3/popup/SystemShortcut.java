@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.android.launcher3.AbstractFloatingView;
+import com.android.launcher3.DeleteDropTarget;
 import com.android.launcher3.InfoDropTarget;
 import com.android.launcher3.ItemInfo;
 import com.android.launcher3.Launcher;
+import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.R;
+import com.android.launcher3.ShortcutInfo;
 import com.android.launcher3.model.WidgetItem;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.widget.WidgetsBottomSheet;
@@ -124,6 +127,34 @@ public abstract class SystemShortcut extends ItemInfo {
                 public void onClick(View view) {
                     AbstractFloatingView.closeAllOpenViews(launcher);
                     com.android.launcher3.UninstallDropTarget.startUninstallActivity(launcher, itemInfo);
+                }
+            };
+        }
+    }
+
+    public static class Remove extends SystemShortcut {
+        public Remove() {
+            super(R.drawable.ic_remove_no_shadow, R.string.remove_drop_target_label);
+        }
+
+        @Override
+        public View.OnClickListener getOnClickListener(final Launcher launcher,
+                final ItemInfo itemInfo) {
+            boolean isWorkspaceItem =
+                    itemInfo.container == LauncherSettings.Favorites.CONTAINER_DESKTOP
+                    || itemInfo.container == LauncherSettings.Favorites.CONTAINER_HOTSEAT
+                    || itemInfo.container >= 0;
+            if (!(itemInfo instanceof ShortcutInfo) || !isWorkspaceItem) {
+                return null;
+            }
+
+            return new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AbstractFloatingView.closeAllOpenViews(launcher);
+                    View workspaceIcon = launcher.getWorkspace().getViewForTag(itemInfo);
+                    DeleteDropTarget.removeWorkspaceOrFolderItem(
+                            launcher, itemInfo, workspaceIcon);
                 }
             };
         }

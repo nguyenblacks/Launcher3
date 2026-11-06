@@ -20,7 +20,6 @@ import com.android.launcher3.graphics.DrawableFactory;
 import com.android.launcher3.util.ComponentKeyMapper;
 import com.android.launcher3.util.Themes;
 import com.google.android.apps.nexuslauncher.search.ItemInfoUpdateReceiver;
-import com.google.android.apps.nexuslauncher.smartspace.SmartspaceView;
 import com.google.android.apps.nexuslauncher.smartspace.SmartspaceController;
 import com.google.android.apps.nexuslauncher.utils.ActionIntentFilter;
 import com.google.android.libraries.gsa.launcherclient.LauncherClient;
@@ -52,7 +51,6 @@ public class NexusLauncher {
     }
 
     class NexusLauncherCallbacks implements LauncherCallbacks, SharedPreferences.OnSharedPreferenceChangeListener, WallpaperColorInfo.OnChangeListener {
-        private SmartspaceView mSmartspace;
         private final FeedReconnector mFeedReconnector = new FeedReconnector();
 
         private ItemInfoUpdateReceiver getUpdateReceiver() {
@@ -110,9 +108,6 @@ public class NexusLauncher {
             mOverlay.setClient(mClient);
 
             prefs.registerOnSharedPreferenceChangeListener(this);
-
-            SmartspaceController.get(mLauncher).cW();
-            mSmartspace = mLauncher.findViewById(R.id.search_container_workspace);
 
             mUiInformation.putInt("system_ui_visibility", mLauncher.getWindow().getDecorView().getSystemUiVisibility());
             WallpaperColorInfo instance = WallpaperColorInfo.getInstance(mLauncher);
@@ -180,10 +175,6 @@ public class NexusLauncher {
         public void onPause() {
             mRunning = false;
             mClient.onPause();
-
-            if (mSmartspace != null) {
-                mSmartspace.onPause();
-            }
         }
 
         public void onPostCreate(final Bundle bundle) {
@@ -203,10 +194,6 @@ public class NexusLauncher {
             }
 
             mClient.onResume();
-
-            if (mSmartspace != null) {
-                mSmartspace.onResume();
-            }
         }
 
         public void onSaveInstanceState(final Bundle bundle) {

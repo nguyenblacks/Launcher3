@@ -184,13 +184,20 @@ public abstract class BaseContainerView extends FrameLayout
      * touch delegate target view.
      */
     private boolean handleTouchEvent(MotionEvent ev) {
+        View touchDelegateTargetView = getTouchDelegateTargetView();
+        int[] targetLocation = new int[2];
+        int[] containerLocation = new int[2];
+        touchDelegateTargetView.getLocationOnScreen(targetLocation);
+        getLocationOnScreen(containerLocation);
+        float targetLeft = targetLocation[0] - containerLocation[0];
+        float targetTop = targetLocation[1] - containerLocation[1];
+        float targetRight = targetLeft + touchDelegateTargetView.getWidth();
+        float targetBottom = targetTop + touchDelegateTargetView.getHeight();
+
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                // Check if the touch is outside touch delegate target view
-                View touchDelegateTargetView = getTouchDelegateTargetView();
-                float leftBoundPx = touchDelegateTargetView.getLeft();
-                if (ev.getX() < leftBoundPx ||
-                        ev.getX() > (touchDelegateTargetView.getWidth() + leftBoundPx)) {
+                if (ev.getX() < targetLeft || ev.getX() > targetRight
+                        || ev.getY() < targetTop || ev.getY() > targetBottom) {
                     mLastTouchDownPosPx.set((int) ev.getX(), (int) ev.getY());
                 }
                 break;

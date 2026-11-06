@@ -127,7 +127,7 @@ public class AllAppsTransitionController implements TouchController, SwipeDetect
         mProgress = 1f;
 
         mEvaluator = new ArgbEvaluator();
-        mAllAppsBackgroundColor = Themes.getAttrColor(l, android.R.attr.colorPrimary);
+        mAllAppsBackgroundColor = Themes.getAttrColor(l, R.attr.allAppsScrimColor);
         mIsDarkTheme = Themes.getAttrBoolean(mLauncher, R.attr.isMainColorDark);
     }
 

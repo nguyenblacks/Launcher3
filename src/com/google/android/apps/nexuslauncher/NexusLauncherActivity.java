@@ -3,6 +3,7 @@ package com.google.android.apps.nexuslauncher;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import androidx.core.splashscreen.SplashScreen;
 
 import com.android.launcher3.AppInfo;
 import com.android.launcher3.Launcher;
@@ -28,6 +29,7 @@ public class NexusLauncherActivity extends Launcher {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        SplashScreen.installSplashScreen(this);
         FeatureFlags.QSB_ON_FIRST_SCREEN = showSmartspace();
         mThemeHints = themeHints();
 
@@ -101,12 +103,10 @@ public class NexusLauncherActivity extends Launcher {
         int orientFlag = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ? 16 : 8;
         boolean useGoogleInOrientation = (orientFlag & flags) != 0;
         supportsDarkText &= Utilities.ATLEAST_NOUGAT;
-        if (useGoogleInOrientation && isDark) {
+        if (useGoogleInOrientation && (isDark || isTransparent)) {
             setTheme(R.style.GoogleSearchLauncherThemeDark);
         } else if (useGoogleInOrientation && supportsDarkText) {
             setTheme(R.style.GoogleSearchLauncherThemeDarkText);
-        } else if (useGoogleInOrientation && isTransparent) {
-            setTheme(R.style.GoogleSearchLauncherThemeTransparent);
         } else if (useGoogleInOrientation) {
             setTheme(R.style.GoogleSearchLauncherTheme);
         } else {

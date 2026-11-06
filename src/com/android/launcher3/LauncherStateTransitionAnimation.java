@@ -87,8 +87,7 @@ public class LauncherStateTransitionAnimation {
      * animation used for all apps tray
      */
     public static final int PULLUP = 1;
-
-    private static final float FINAL_REVEAL_ALPHA_FOR_WIDGETS = 0.3f;
+    private static final int BOTTOM_SHEET = 2;
 
     /**
      * Private callbacks made during transition setup.
@@ -171,8 +170,8 @@ public class LauncherStateTransitionAnimation {
         final WidgetsContainerView toView = mLauncher.getWidgetsView();
         final View buttonView = mLauncher.getWidgetsButton();
         startAnimationToOverlay(
-                Workspace.State.OVERVIEW_HIDDEN, buttonView, toView, animated, CIRCULAR_REVEAL,
-                new PrivateTransitionCallbacks(FINAL_REVEAL_ALPHA_FOR_WIDGETS){
+                Workspace.State.OVERVIEW_HIDDEN, buttonView, toView, animated, BOTTOM_SHEET,
+                new PrivateTransitionCallbacks(1f) {
                     @Override
                     void onTransitionComplete() {
                         mLauncher.getUserEventDispatcher().resetElapsedContainerMillis();
@@ -240,6 +239,10 @@ public class LauncherStateTransitionAnimation {
             toView.setScaleX(1.0f);
             toView.setScaleY(1.0f);
             toView.setAlpha(1.0f);
+            if (animType == BOTTOM_SHEET) {
+                contentView.setTranslationY(0);
+                contentView.setAlpha(1f);
+            }
             toView.setVisibility(View.VISIBLE);
 
             // Show the content view
@@ -330,6 +333,32 @@ public class LauncherStateTransitionAnimation {
             toView.bringToFront();
             toView.setVisibility(View.VISIBLE);
 
+            animation.addListener(layerViews);
+            toView.post(new StartAnimRunnable(animation, toView));
+            mCurrentAnimation = animation;
+        } else if (animType == BOTTOM_SHEET) {
+            final float sheetHeight = toView.getHeight();
+            contentView.setVisibility(View.VISIBLE);
+            contentView.setAlpha(1f);
+            contentView.setTranslationY(sheetHeight);
+            layerViews.addView(contentView);
+
+            ObjectAnimator sheetSlide = ObjectAnimator.ofFloat(
+                    contentView, View.TRANSLATION_Y, sheetHeight, 0);
+            sheetSlide.setDuration(revealDurationSlide);
+            sheetSlide.setInterpolator(new LogDecelerateInterpolator(100, 0));
+            animation.play(sheetSlide);
+
+            animation.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    contentView.setTranslationY(0);
+                    cleanupAnimation();
+                    pCb.onTransitionComplete();
+                }
+            });
+            toView.bringToFront();
+            toView.setVisibility(View.VISIBLE);
             animation.addListener(layerViews);
             toView.post(new StartAnimRunnable(animation, toView));
             mCurrentAnimation = animation;
@@ -430,17 +459,7 @@ public class LauncherStateTransitionAnimation {
             final Runnable onCompleteRunnable) {
         final WidgetsContainerView widgetsView = mLauncher.getWidgetsView();
         PrivateTransitionCallbacks cb =
-                new PrivateTransitionCallbacks(FINAL_REVEAL_ALPHA_FOR_WIDGETS) {
-            @Override
-            public AnimatorListenerAdapter getMaterialRevealViewAnimatorListener(
-                    final View revealView, final View widgetsButtonView) {
-                return new AnimatorListenerAdapter() {
-                    public void onAnimationEnd(Animator animation) {
-                        // Hide the reveal view
-                        revealView.setVisibility(View.INVISIBLE);
-                    }
-                };
-            }
+                new PrivateTransitionCallbacks(1f) {
             @Override
             void onTransitionComplete() {
                 mLauncher.getUserEventDispatcher().resetElapsedContainerMillis();
@@ -449,7 +468,7 @@ public class LauncherStateTransitionAnimation {
         startAnimationToWorkspaceFromOverlay(
                 fromWorkspaceState, toWorkspaceState,
                 mLauncher.getWidgetsButton(), widgetsView,
-                animated, CIRCULAR_REVEAL, onCompleteRunnable, cb);
+                animated, BOTTOM_SHEET, onCompleteRunnable, cb);
     }
 
     /**
@@ -527,6 +546,10 @@ public class LauncherStateTransitionAnimation {
                 mAllAppsController.finishPullDown();
             }
             fromView.setVisibility(View.GONE);
+            if (animType == BOTTOM_SHEET) {
+                contentView.setTranslationY(0);
+                contentView.setAlpha(1f);
+            }
             pCb.onTransitionComplete();
 
             // Run any queued runnables
@@ -535,7 +558,33 @@ public class LauncherStateTransitionAnimation {
             }
             return;
         }
-        if (animType == CIRCULAR_REVEAL) {
+        if (animType == BOTTOM_SHEET) {
+            final float sheetHeight = fromView.getHeight();
+            contentView.setTranslationY(0);
+            layerViews.addView(contentView);
+
+            ObjectAnimator sheetSlide = ObjectAnimator.ofFloat(
+                    contentView, View.TRANSLATION_Y, 0, sheetHeight);
+            sheetSlide.setDuration(revealDurationSlide);
+            sheetSlide.setInterpolator(new LogDecelerateInterpolator(100, 0));
+            animation.play(sheetSlide);
+
+            animation.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    fromView.setVisibility(View.GONE);
+                    contentView.setTranslationY(0);
+                    cleanupAnimation();
+                    pCb.onTransitionComplete();
+                    if (onCompleteRunnable != null) {
+                        onCompleteRunnable.run();
+                    }
+                }
+            });
+            animation.addListener(layerViews);
+            fromView.post(new StartAnimRunnable(animation, null));
+            mCurrentAnimation = animation;
+        } else if (animType == CIRCULAR_REVEAL) {
             // hideAppsCustomizeHelper is called in some cases when it is already hidden
             // don't perform all these no-op animations. In particularly, this was causing
             // the all-apps button to pop in and out.

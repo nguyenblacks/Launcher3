@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     Go Launcher 3 – All Apps search bar (pill)
-    Clean M3 pill: translucent Monet surface, G icon left, mic right.
+    Solid themed pill with G icon left and mic right.
     Height: 48dp (lean). Margins: 16dp each side. 100dp radius = true pill.
     Hint text "Search apps" is drawn by AllAppsQsbLayout in code.
 -->

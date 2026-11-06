@@ -1,65 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    Go Launcher 3 – Home Settings (Material 3)
-    Clean solid surface, no transparency, no duplicate layers.
--->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/m3_settings_background"
+    android:background="@android:color/white"
     android:fitsSystemWindows="true">
 
-    <!-- M3 Top App Bar — solid, flat, no transparency -->
     <LinearLayout
         android:id="@+id/m3_settings_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="56dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingStart="4dp"
+        android:paddingStart="8dp"
         android:paddingEnd="16dp"
-        android:background="@color/m3_settings_background"
-        android:elevation="0dp">
+        android:background="@android:color/white">
 
-        <!-- Back button -->
         <ImageButton
             android:id="@+id/m3_settings_back"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="?android:selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:src="@android:drawable/ic_media_previous"
             android:scaleType="center"
-            android:tint="@color/m3_monet_primary"
             android:contentDescription="@android:string/cancel" />
 
-        <!-- Title -->
         <TextView
             android:id="@+id/m3_settings_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/settings_button_text"
-            android:textColor="#1C1B1F"
-            android:textSize="22sp"
-            android:fontFamily="sans-serif-medium"
+            android:textColor="#212121"
+            android:textSize="20sp"
+            android:fontFamily="sans-serif"
             android:paddingStart="8dp" />
 
     </LinearLayout>
 
-    <!-- 1dp M3 divider under toolbar -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E6E0F8" />
+        android:background="#E0E0E0" />
 
-    <!-- Preferences content — solid M3 surface -->
     <FrameLayout
         android:id="@+id/m3_settings_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/m3_settings_background" />
+        android:background="@android:color/white" />
 
 </LinearLayout>

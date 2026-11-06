@@ -18,5 +18,13 @@
 
     <!-- Hotseat -->
     <include launcher:workspace="@xml/dw_hotseat_6" />
+    <appwidget
+        launcher:packageName="com.sw.goluancher3"
+        launcher:className="com.android.launcher3.widget.DoubleClockWidgetProvider"
+        launcher:screen="0"
+        launcher:x="2"
+        launcher:y="1"
+        launcher:spanX="2"
+        launcher:spanY="2" />
 
 </favorites>

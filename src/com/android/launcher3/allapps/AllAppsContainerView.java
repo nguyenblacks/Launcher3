@@ -43,7 +43,6 @@ import com.android.launcher3.PromiseAppInfo;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.anim.SpringAnimationHandler;
-import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.dragndrop.DragController;
 import com.android.launcher3.dragndrop.DragOptions;
 import com.android.launcher3.folder.Folder;
@@ -222,10 +221,6 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
         mAppsRecyclerView.setHasFixedSize(true);
         // No animations will occur when changes occur to the items in this RecyclerView.
         mAppsRecyclerView.setItemAnimator(null);
-        if (FeatureFlags.LAUNCHER3_PHYSICS) {
-            mAppsRecyclerView.setSpringAnimationHandler(mSpringAnimationHandler);
-        }
-
         mSearchContainer = findViewById(R.id.search_container_all_apps);
         mSearchUiManager = (SearchUiManager) mSearchContainer;
         mSearchUiManager.initialize(mApps, mAppsRecyclerView);

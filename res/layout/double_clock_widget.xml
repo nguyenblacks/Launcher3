@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="4dp">
+
+    <TextClock
+        android:id="@+id/double_clock_hours"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:format12Hour="hh"
+        android:format24Hour="HH"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="#202124"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+    <TextClock
+        android:id="@+id/double_clock_minutes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:format12Hour="mm"
+        android:format24Hour="mm"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="#202124"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+</LinearLayout>

@@ -15,8 +15,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.protobuf'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 31
+    buildToolsVersion '31.0.0'
 
     defaultConfig {
         minSdkVersion 26
@@ -120,6 +120,7 @@ dependencies {
     implementation "com.android.support:support-dynamic-animation:${SUPPORT_LIBS_VERSION}"
     implementation "com.android.support:recyclerview-v7:${SUPPORT_LIBS_VERSION}"
     implementation "com.android.support:palette-v7:${SUPPORT_LIBS_VERSION}"
+    implementation 'androidx.core:core-splashscreen:1.0.1'
     implementation 'com.google.protobuf.nano:protobuf-javanano:3.2.0rc2'
 
     testImplementation 'junit:junit:4.12'

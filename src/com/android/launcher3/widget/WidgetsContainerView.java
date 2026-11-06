@@ -90,7 +90,13 @@ public class WidgetsContainerView extends BaseContainerView
 
     @Override
     public View getTouchDelegateTargetView() {
-        return mRecyclerView;
+        return getContentView();
+    }
+
+    @Override
+    protected void updateBackground(int paddingLeft, int paddingTop,
+            int paddingRight, int paddingBottom) {
+        super.updateBackground(0, 0, 0, 0);
     }
 
     @Override
@@ -243,7 +249,7 @@ public class WidgetsContainerView extends BaseContainerView
 
         View loader = getContentView().findViewById(R.id.loader);
         if (loader != null) {
-            ((ViewGroup) getContentView()).removeView(loader);
+            ((ViewGroup) loader.getParent()).removeView(loader);
         }
     }
 

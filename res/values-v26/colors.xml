@@ -17,5 +17,5 @@
 */
 -->
 <resources>
-    <color name="all_apps_navbar_color">#66FFFFFF</color>
+    <color name="all_apps_navbar_color">#FFFAFAFA</color>
 </resources>

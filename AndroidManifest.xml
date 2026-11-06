@@ -84,6 +84,7 @@
         -->
         <activity
             android:name="com.google.android.apps.nexuslauncher.NexusLauncherActivity"
+            android:theme="@style/LauncherSplashTheme"
             android:launchMode="singleTask"
             android:clearTaskOnLaunch="true"
             android:stateNotNeeded="true"
@@ -155,6 +156,18 @@
             </intent-filter>
         </receiver>
         <receiver android:name="com.google.android.apps.nexuslauncher.qsb.LongClickReceiver" />
+        <receiver
+            android:name="com.android.launcher3.widget.DoubleClockWidgetProvider"
+            android:exported="true"
+            android:label="@string/double_clock_widget_name"
+            android:permission="android.permission.BIND_APPWIDGET">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/double_clock_widget_info" />
+        </receiver>
         <provider
             android:authorities="${applicationId}.appssearch"
             android:exported="true"

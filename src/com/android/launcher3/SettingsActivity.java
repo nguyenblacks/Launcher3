@@ -52,12 +52,16 @@ public class SettingsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null && shouldDisplayDefaultSettingsFragment()) {
             // Display the fragment as the main content.
             getFragmentManager().beginTransaction()
                     .replace(android.R.id.content, new LauncherSettingsFragment())
                     .commit();
         }
+    }
+
+    protected boolean shouldDisplayDefaultSettingsFragment() {
+        return true;
     }
 
     /**

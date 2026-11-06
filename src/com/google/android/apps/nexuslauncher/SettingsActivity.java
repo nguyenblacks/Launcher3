@@ -37,13 +37,18 @@ public class SettingsActivity extends com.android.launcher3.SettingsActivity imp
     private final static String GOOGLE_APP = "com.google.android.googlequicksearchbox";
 
     @Override
+    protected boolean shouldDisplayDefaultSettingsFragment() {
+        return false;
+    }
+
+    @Override
     protected void onCreate(final Bundle bundle) {
         super.onCreate(bundle);
 
-        // Inflate M3 / Monet custom layout (no legacy ActionBar)
+        // Keep the settings content inside the launcher-owned toolbar layout.
         setContentView(R.layout.activity_settings_m3);
 
-        // Hook up M3 back button
+        // Hook up the toolbar back button.
         android.view.View backBtn = findViewById(R.id.m3_settings_back);
         if (backBtn != null) {
             backBtn.setOnClickListener(new android.view.View.OnClickListener() {
@@ -67,7 +72,10 @@ public class SettingsActivity extends com.android.launcher3.SettingsActivity imp
         if (instantiate instanceof DialogFragment) {
             ((DialogFragment) instantiate).show(getFragmentManager(), preference.getKey());
         } else {
-            getFragmentManager().beginTransaction().replace(android.R.id.content, instantiate).addToBackStack(preference.getKey()).commit();
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.m3_settings_content, instantiate)
+                    .addToBackStack(preference.getKey())
+                    .commit();
         }
         return true;
     }
