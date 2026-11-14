@@ -65,6 +65,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
+            ~/.android
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle', '**/gradle-wrapper.properties') }}
           restore-keys: ${{ runner.os }}-gradle-
 
@@ -162,7 +163,9 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
+            ~/.android
           key: ${{ runner.os }}-gradle-release-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle-
 
       - name: Build release APK
         run: |
@@ -194,7 +197,7 @@ jobs:
             3. Enable **"Install from unknown sources"** if prompted
             4. Install and set as default launcher
 
-            > **Requires Android 5.0+ (API 21)**
+            > **Requires Android 8.0+ (API 26)**
 
             *APK size: ${{ steps.release_apk.outputs.apk_size }}*
           files: ${{ steps.release_apk.outputs.apk_path }}

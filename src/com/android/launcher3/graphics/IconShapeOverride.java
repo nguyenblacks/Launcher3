@@ -197,8 +197,8 @@ public class IconShapeOverride {
                     .setPackage(mContext.getPackageName())
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent pi = PendingIntent.getActivity(mContext, RESTART_REQUEST_CODE,
-                    homeIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
-            mContext.getSystemService(AlarmManager.class).setExact(
+                    homeIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+            mContext.getSystemService(AlarmManager.class).set(
                     AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 50, pi);
 
             // Kill process

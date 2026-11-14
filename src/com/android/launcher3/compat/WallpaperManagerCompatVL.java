@@ -105,12 +105,21 @@ public class WallpaperManagerCompatVL extends WallpaperManagerCompat {
             // Something went wrong. ignore
             Log.d(TAG, "Unable to get permission info", e);
         }
-        mContext.registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                handleResult(intent.getStringExtra(KEY_COLORS));
-            }
-        }, new IntentFilter(ACTION_EXTRACTION_COMPLETE), permission, new Handler());
+        if (android.os.Build.VERSION.SDK_INT >= 33) {
+            mContext.registerReceiver(new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    handleResult(intent.getStringExtra(KEY_COLORS));
+                }
+            }, new IntentFilter(ACTION_EXTRACTION_COMPLETE), permission, new Handler(), Context.RECEIVER_NOT_EXPORTED);
+        } else {
+            mContext.registerReceiver(new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    handleResult(intent.getStringExtra(KEY_COLORS));
+                }
+            }, new IntentFilter(ACTION_EXTRACTION_COMPLETE), permission, new Handler());
+        }
     }
 
     @Nullable
